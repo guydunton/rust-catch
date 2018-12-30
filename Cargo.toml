@@ -1,5 +1,5 @@
 [package]
-name = "rs-catch"
+name = "rust-catch"
 version = "0.1.0"
 authors = ["Guy Dunton PC <guy.dunton@gmail.com>"]
 edition = "2018"
