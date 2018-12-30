@@ -1,0 +1,13 @@
+[package]
+name = "rs-catch"
+version = "0.1.0"
+authors = ["Guy Dunton PC <guy.dunton@gmail.com>"]
+edition = "2018"
+
+[lib]
+proc-macro = true
+
+[dependencies]
+syn = { version="0.15.0", features = ["full", "parsing"] }
+quote = "0.6.0"
+proc-macro2 = "0.4.0"
