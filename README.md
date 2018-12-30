@@ -4,6 +4,16 @@ This is a Rust unit-testing framework based on the excellent C++ library [Catch/
 
 The goals of the Rust library are the same as the C++ one; write unit-test code using the patterns and idioms of the Rust language.
 
+## Example
+
+```rust
+test_suite! {
+    test_case!("descriptive test name") {
+        assert_eq!(function_under_test(), result); 
+    }
+}
+```
+
 ## Motivation
 
 In Rust, unit-tests are written as functions using the `#[test]` attribute. e.g.
