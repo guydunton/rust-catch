@@ -5,4 +5,4 @@ authors = ["Guy Dunton PC <guy.dunton@gmail.com>"]
 edition = "2018"
 
 [dependencies]
-rs-catch = { path=".." }
+rust-catch = { path=".." }

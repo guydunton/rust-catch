@@ -1,4 +1,4 @@
-use rs_catch::test_suite;
+use rust_catch::test_suite;
 
 fn add(a: i32, b: i32) -> i32 {
     a + b
@@ -32,6 +32,24 @@ fn add_works_with_negative_numbers() {
 }
 
 */
+
+
+test_suite! {
+    test_case!("sectioned test case") {
+        
+        let mut a = 3;
+
+        section!("adding 1 increases the value") {
+            a += 1;
+            assert_eq!(a, 4);
+        }
+
+        section!("minus 1 decreases the value") {
+            a -= 1;
+            assert_eq!(a, 2;)
+        }
+    }
+}
 
 
 
