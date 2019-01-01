@@ -14,6 +14,29 @@ test_suite! {
 }
 ```
 
+## Example with Sections
+
+```rust
+test_suite! {
+    test_case("vec capacity change appropriately") {
+
+        // Variable initialized for each section
+        let mut vec = vec![1, 2, 3];
+
+        section!("push increases capacity") {
+            vec.push(4);
+            assert_eq!(vec.capacity(), 4);
+        }
+
+        section!("pop leaves capacity same size") {
+            vec.pop();
+            assert_eq!(vec.capacity(), 3);
+        }
+
+    }
+}
+```
+
 ## Motivation
 
 In Rust, unit-tests are written as functions using the `#[test]` attribute. e.g.
@@ -41,7 +64,7 @@ test_suite! {
         assert_eq!(add(1, 2), 3);
     }
 
-    test_case("add works with negative numbers") {
+    test_case!("add works with negative numbers") {
         assert_eq!(add(5, -1), 4);
     }
 }
@@ -59,8 +82,7 @@ fn add_works_with_negative_numbers() {
 }
 ```
 
-
-## Unimplemented Features
+## Features
 
 ### Sections
 
@@ -95,6 +117,8 @@ test_suite! {
 // Is converted to:
 
 mod Vec_can_be_expanded_and_shrunk {
+    use super::*;
+    
     #[test]
     fn Expanding_a_vec_increases_capacity_&_length() {
 
