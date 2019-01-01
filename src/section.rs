@@ -1,6 +1,6 @@
-use quote::ToTokens;
+use quote::{quote, ToTokens};
 use syn::parse::{Parse, ParseStream, Result};
-use syn::{braced, parenthesized, Block, LitStr, Stmt, Token};
+use syn::{braced, parenthesized, Block, Ident, LitStr, Stmt, Token};
 
 pub mod kw {
     custom_keyword!(section);
@@ -31,6 +31,22 @@ impl Parse for Section {
     }
 }
 
+fn name_as_ident(name: &LitStr) -> Ident {
+    let text = name.value().replace(' ', "_");
+    Ident::new(&text[..], name.span())
+}
+
+impl Section {
+    pub fn name(&self) -> Ident {
+        name_as_ident(&self.name)
+    }
+}
+
 impl ToTokens for Section {
-    fn to_tokens(&self, tokens: &mut proc_macro2::TokenStream) {}
+    fn to_tokens(&self, tokens: &mut proc_macro2::TokenStream) {
+        let code = self.code.clone();
+        tokens.extend(quote! {
+            #( #code )*;
+        });
+    }
 }

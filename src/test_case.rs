@@ -1,7 +1,7 @@
 use crate::section::{kw::section, Section};
 use quote::{quote, ToTokens};
 use syn::parse::{Parse, ParseStream, Result};
-use syn::{braced, parenthesized, Block, Ident, LitStr, Stmt, Token};
+use syn::{braced, parenthesized, Ident, LitStr, Stmt, Token};
 
 mod kw {
     custom_keyword!(test_case);
@@ -9,19 +9,19 @@ mod kw {
 
 #[derive(Clone)]
 enum CaseLines {
-    Statement(Stmt),
+    Statement(Box<Stmt>),
     Section(Section),
 }
 
 impl ToTokens for CaseLines {
     fn to_tokens(&self, tokens: &mut proc_macro2::TokenStream) {
         match self {
-            CaseLines::Statement(stmt) => {
-                stmt.to_tokens(tokens);
-            }
-            CaseLines::Section(sec) => {
-                sec.to_tokens(tokens);
-            }
+            CaseLines::Statement(stmt) => tokens.extend(quote! {
+                #stmt
+            }),
+            CaseLines::Section(sec) => tokens.extend(quote! {
+                #sec
+            }),
         }
     }
 }
@@ -64,7 +64,7 @@ impl Parse for TestCase {
                 code.push(CaseLines::Section(next_section));
             } else {
                 let next_line = brace_content.parse::<Stmt>()?;
-                code.push(CaseLines::Statement(next_line));
+                code.push(CaseLines::Statement(Box::new(next_line)));
             }
         }
 
@@ -82,18 +82,54 @@ impl ToTokens for TestCase {
         let final_name = name_as_ident(&self.name);
         let code = self.code.clone();
 
-        let result = if code.iter().any(|l| is_section(l)) {
+        if code.iter().any(|l| is_section(l)) {
             // Print each section with the current lines
-            quote! {}
+
+            let section_indices: Vec<usize> = code
+                .iter()
+                .enumerate()
+                .filter(|(_, l)| is_section(l))
+                .map(|(i, _)| i)
+                .collect();
+
+            // A stream to put the sections into
+            let mut section_stream = proc_macro2::TokenStream::new();
+
+            for index in section_indices {
+                match &code[index] {
+                    CaseLines::Section(sec) => {
+                        let before_code = code[..index].iter().filter(|l| !is_section(&l));
+                        let after_code = code[index + 1..].iter().filter(|l| !is_section(&l));
+                        let fn_name = sec.name();
+
+                        section_stream.extend(quote! {
+                            #[test]
+                            fn #fn_name() {
+                                #( #before_code )*;
+
+                                #sec
+
+                                #( #after_code )*;
+                            }
+                        });
+                    }
+                    _ => panic!("Found a line that has incorrectly been identified as a section"),
+                }
+            }
+
+            tokens.extend(quote! {
+                mod #final_name {
+                    #section_stream
+                }
+            });
         } else {
-            quote! {
+            let result = quote! {
                 #[test]
                 fn #final_name() {
                     #( #code )*;
                 }
-            }
-        };
-
-        tokens.extend(result);
+            };
+            tokens.extend(result);
+        }
     }
 }

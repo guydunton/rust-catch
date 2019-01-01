@@ -46,7 +46,7 @@ test_suite! {
 
         section!("minus 1 decreases the value") {
             a -= 1;
-            assert_eq!(a, 2;)
+            assert_eq!(a, 2);
         }
     }
 }
