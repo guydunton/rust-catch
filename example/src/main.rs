@@ -51,6 +51,18 @@ test_suite! {
     }
 }
 
+test_suite! {
+    test_case!("add tests") {
+        section!("Add works with regular numbers") {
+            assert_eq!(add(1, 2), 3);
+        }
+
+        section!("Add works with negative numbers") {
+            assert_eq!(add(5, -1), 4);
+        }
+    }
+}
+
 
 
 fn main() {

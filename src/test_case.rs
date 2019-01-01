@@ -119,6 +119,7 @@ impl ToTokens for TestCase {
 
             tokens.extend(quote! {
                 mod #final_name {
+                    use super::*;
                     #section_stream
                 }
             });
