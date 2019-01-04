@@ -93,10 +93,7 @@ test_suite! {
     test_case!("Vec can be expanded and shrunk") {
         
         // Setup
-        let mut vec = Vec::new();
-        vec.push(1);
-        vec.push(2);
-        vec.push(3);
+        let mut vec = vec![1, 2, 3];
 
         section!("Expanding a vec increases capacity & length") {
             vec.push(4);
@@ -123,10 +120,7 @@ mod Vec_can_be_expanded_and_shrunk {
     fn Expanding_a_vec_increases_capacity_&_length() {
 
         // Setup
-        let mut vec = Vec::new();
-        vec.push(1);
-        vec.push(2);
-        vec.push(3);
+        let mut vec = vec![1, 2, 3];
 
         // Test code
         vec.push(4);
@@ -139,10 +133,7 @@ mod Vec_can_be_expanded_and_shrunk {
     fn reducing_the_vec_decreases_length_but_not_capacity() {
 
         // Setup
-        let mut vec = Vec::new();
-        vec.push(1);
-        vec.push(2);
-        vec.push(3);
+        let mut vec = vec![1, 2, 3];
 
         // Test code
         vec.pop();
