@@ -103,6 +103,7 @@ impl ToTokens for TestCase {
                         let fn_name = sec.name();
 
                         section_stream.extend(quote! {
+                            #[allow(unused_mut, unused_variables)]
                             #[test]
                             fn #fn_name() {
                                 #( #before_code )*;
