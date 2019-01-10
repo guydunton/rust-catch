@@ -8,20 +8,6 @@ mod kw {
 }
 
 #[derive(Clone)]
-enum CaseLines {
-    Statement(Box<Stmt>),
-    Section(Section),
-}
-
-impl ToTokens for CaseLines {
-    fn to_tokens(&self, tokens: &mut proc_macro2::TokenStream) {
-        match self {
-            CaseLines::Statement(stmt) => stmt.to_tokens(tokens),
-            CaseLines::Section(sec) => sec.to_tokens(tokens),
-        }
-    }
-}
-
 enum Lines {
     Statement(Box<Stmt>),
     Section(IndexSection),
@@ -36,16 +22,16 @@ impl ToTokens for Lines {
     }
 }
 
-fn is_section(line: &CaseLines) -> bool {
+fn is_section(line: &Lines) -> bool {
     match line {
-        CaseLines::Section(_) => true,
+        Lines::Section(_) => true,
         _ => false,
     }
 }
 
 pub struct TestCase {
     name: LitStr,
-    code: Vec<CaseLines>,
+    code: Vec<Lines>,
 }
 
 impl Parse for TestCase {
@@ -64,6 +50,8 @@ impl Parse for TestCase {
 
         let mut code = Vec::new();
 
+        let mut section_count = 0;
+
         loop {
             if brace_content.is_empty() {
                 break;
@@ -71,10 +59,15 @@ impl Parse for TestCase {
             let lookahead = brace_content.lookahead1();
             if lookahead.peek(section) {
                 let next_section = brace_content.parse::<Section>()?;
-                code.push(CaseLines::Section(next_section));
+                code.push(Lines::Section(IndexSection::new(
+                    section_count,
+                    next_section,
+                )));
+
+                section_count += 1;
             } else {
                 let next_line = brace_content.parse::<Stmt>()?;
-                code.push(CaseLines::Statement(Box::new(next_line)));
+                code.push(Lines::Statement(Box::new(next_line)));
             }
         }
 
@@ -96,18 +89,7 @@ impl ToTokens for TestCase {
             // A stream to put the sections into
             let mut section_stream = proc_macro2::TokenStream::new();
 
-            let transformed_code = code
-                .iter()
-                .enumerate()
-                .map(|(index, line)| match line {
-                    CaseLines::Statement(stmt) => Lines::Statement(stmt.clone()),
-                    CaseLines::Section(section) => {
-                        Lines::Section(IndexSection::new(index as u32, section.clone()))
-                    }
-                })
-                .collect::<Vec<Lines>>();
-
-            let sections = transformed_code
+            let sections = code
                 .iter()
                 .filter_map(|line| match line {
                     Lines::Section(section) => Some(section),
@@ -118,7 +100,7 @@ impl ToTokens for TestCase {
             for section in sections {
                 let name = section.name();
                 let index = section.index();
-                let trans = &transformed_code;
+                let trans = &code;
 
                 section_stream.extend(quote! {
                     #[test]

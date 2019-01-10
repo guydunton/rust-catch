@@ -45,6 +45,7 @@ impl ToTokens for Section {
     }
 }
 
+#[derive(Clone)]
 pub struct IndexSection {
     index: u32,
     section: Section,
