@@ -36,17 +36,43 @@ fn name_as_ident(name: &LitStr) -> Ident {
     Ident::new(&text[..], name.span())
 }
 
-impl Section {
-    pub fn name(&self) -> Ident {
-        name_as_ident(&self.name)
-    }
-}
-
 impl ToTokens for Section {
     fn to_tokens(&self, tokens: &mut proc_macro2::TokenStream) {
         let code = self.code.clone();
         tokens.extend(quote! {
             #( #code )*;
+        });
+    }
+}
+
+pub struct IndexSection {
+    index: u32,
+    section: Section,
+}
+
+impl IndexSection {
+    pub fn new(index: u32, section: Section) -> IndexSection {
+        IndexSection { index, section }
+    }
+
+    pub fn name(&self) -> Ident {
+        name_as_ident(&self.section.name)
+    }
+
+    pub fn index(&self) -> u32 {
+        self.index
+    }
+}
+
+impl ToTokens for IndexSection {
+    fn to_tokens(&self, tokens: &mut proc_macro2::TokenStream) {
+        let section = &self.section;
+        let index = self.index;
+
+        tokens.extend(quote! {
+            if __rust_catch_section == #index {
+                #section
+            }
         });
     }
 }

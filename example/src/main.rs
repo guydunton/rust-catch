@@ -25,13 +25,11 @@ test_suite! {
 
 expands to:
 
-#[allow(unused_mut)]
 #[test]
 fn add_works_with_positive_numbers() {
     assert_eq!(add(1, 2), 3);
 }
 
-#[allow(unused_mut)]
 #[test]
 fn add_works_with_negative_numbers() {
     assert_eq!(add(5, -1), 4);
@@ -81,19 +79,61 @@ test_suite! {
 
 mod another_test_case {
 
-    #[allow(unused_mut)]
     #[test]
     fn test_which_modifies_a() {
-        let mut a = 4;
-        a += 2;
-        assert_eq!(a, 6);
+        let __rust_catch_section = 0;
+        let mut a = 4; // This shouldn't warn on remove mut
+
+        if __rust_catch_section == 0 {
+            a += 2;
+            assert_eq!(a, 6);
+        }
+
+        if __rust_catch_section == 1 {
+            assert_eq!(a, 4);
+        }
+
+        if __rust_catch_section == 2 {
+            assert_eq!(4, 4);
+        }
     }
 
-    #[allow(unused_mut)]
     #[test]
     fn test_that_doesnt_modify_a() {
-        let mut a = 4;
-        assert_eq!(a, 4);
+        let __rust_catch_section = 1;
+        let mut a = 4; // This shouldn't warn on remove mut
+        
+        if __rust_catch_section == 0 {
+            a += 2;
+            assert_eq!(a, 6);
+        }
+
+        if __rust_catch_section == 1 {
+            assert_eq!(a, 4);
+        }
+
+        if __rust_catch_section == 2 {
+            assert_eq!(4, 4);
+        }
+    }
+
+    #[test]
+    fn sec_doesnt_use_a() {
+        let __rust_catch_section = 2;
+        let mut a = 4; 
+
+        if __rust_catch_section == 0 {
+            a += 2;
+            assert_eq!(a, 6);
+        }
+
+        if __rust_catch_section == 1 {
+            assert_eq!(a, 4);
+        }
+
+        if __rust_catch_section == 2 {
+            assert_eq!(4, 4);
+        }
     }
 }
 
