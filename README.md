@@ -34,7 +34,6 @@ test_suite! {
             vec.pop();
             assert_eq!(vec.capacity(), 3);
         }
-
     }
 }
 ```
@@ -97,7 +96,7 @@ test_suite! {
         // Setup
         let mut vec = vec![1, 2, 3];
 
-        section!("Expanding a vec increases capacity & length") {
+        section!("Expanding a vec increases capacity and length") {
             vec.push(4);
 
             assert_eq!(vec.len(), 4);
@@ -119,7 +118,7 @@ mod Vec_can_be_expanded_and_shrunk {
     use super::*;
     
     #[test]
-    fn Expanding_a_vec_increases_capacity_&_length() {
+    fn Expanding_a_vec_increases_capacity_and_length() {
 
         // Setup
         let mut vec = vec![1, 2, 3];
