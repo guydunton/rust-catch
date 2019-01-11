@@ -10,7 +10,7 @@ The goals of the Rust library are the same as the C++ one; write unit-test code 
 
 ```rust
 test_suite! {
-    test_case!("descriptive test name") {
+    test_case("descriptive test name") {
         assert_eq!(function_under_test(), result); 
     }
 }
@@ -25,12 +25,12 @@ test_suite! {
         // Variable initialized for each section
         let mut vec = vec![1, 2, 3];
 
-        section!("push increases capacity") {
+        section("push increases capacity") {
             vec.push(4);
             assert_eq!(vec.capacity(), 4);
         }
 
-        section!("pop leaves capacity same size") {
+        section("pop leaves capacity same size") {
             vec.pop();
             assert_eq!(vec.capacity(), 3);
         }
@@ -61,11 +61,11 @@ The above test could be written using Rust-Catch as follows:
 
 ```rust
 test_suite! {
-    test_case!("add works with positive numbers") {
+    test_case("add works with positive numbers") {
         assert_eq!(add(1, 2), 3);
     }
 
-    test_case!("add works with negative numbers") {
+    test_case("add works with negative numbers") {
         assert_eq!(add(5, -1), 4);
     }
 }
@@ -91,19 +91,19 @@ Sections are an answer to text fixtures from other testing frameworks. The setup
 
 ```rust
 test_suite! {
-    test_case!("Vec can be expanded and shrunk") {
+    test_case("Vec can be expanded and shrunk") {
         
         // Setup
         let mut vec = vec![1, 2, 3];
 
-        section!("Expanding a vec increases capacity and length") {
+        section("Expanding a vec increases capacity and length") {
             vec.push(4);
 
             assert_eq!(vec.len(), 4);
             assert_eq!(vec.capacity(), 4);
         }
 
-        section!("reducing the vec decreases length but not capacity") {
+        section("reducing the vec decreases length but not capacity") {
             vec.pop();
 
             assert_eq!(vec.len(), 2);

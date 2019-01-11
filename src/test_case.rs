@@ -1,7 +1,7 @@
 use crate::section::{kw::section, IndexSection, Section};
 use quote::{quote, ToTokens};
 use syn::parse::{Parse, ParseStream, Result};
-use syn::{braced, parenthesized, Ident, LitStr, Stmt, Token};
+use syn::{braced, parenthesized, Ident, LitStr, Stmt};
 
 mod kw {
     custom_keyword!(test_case);
@@ -37,7 +37,6 @@ pub struct TestCase {
 impl Parse for TestCase {
     fn parse(input: ParseStream) -> Result<Self> {
         input.parse::<kw::test_case>()?;
-        input.parse::<Token![!]>()?;
 
         // Parse the brackets to get the name
         let paren_content;

@@ -1,6 +1,6 @@
 use quote::{quote, ToTokens};
 use syn::parse::{Parse, ParseStream, Result};
-use syn::{braced, parenthesized, Block, Ident, LitStr, Stmt, Token};
+use syn::{braced, parenthesized, Block, Ident, LitStr, Stmt};
 
 pub mod kw {
     custom_keyword!(section);
@@ -15,7 +15,6 @@ pub struct Section {
 impl Parse for Section {
     fn parse(input: ParseStream) -> Result<Self> {
         input.parse::<kw::section>()?;
-        input.parse::<Token![!]>()?;
 
         // Parse the name
         let paren_content;
