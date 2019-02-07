@@ -171,6 +171,16 @@ test_suite! {
 }
 
 /*
+// This will give an error but will highlight the test_case name only
+test_suite! {
+    test_case("") {
+        section("") {
+        }
+    }
+}
+*/
+
+/*
 
 #[test_case]
 test "" {

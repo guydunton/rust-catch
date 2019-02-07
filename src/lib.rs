@@ -5,6 +5,7 @@ extern crate proc_macro;
 use quote::quote;
 use syn::parse_macro_input;
 
+mod names;
 mod section;
 mod test_case;
 mod test_suite;

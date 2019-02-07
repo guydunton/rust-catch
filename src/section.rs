@@ -1,3 +1,4 @@
+use super::names::name_as_ident2;
 use quote::{quote, ToTokens};
 use syn::parse::{Parse, ParseStream, Result};
 use syn::{braced, parenthesized, Block, Ident, LitStr, Stmt};
@@ -30,11 +31,6 @@ impl Parse for Section {
     }
 }
 
-fn name_as_ident(name: &LitStr) -> Ident {
-    let text = name.value().replace(' ', "_");
-    Ident::new(&text[..], name.span())
-}
-
 impl ToTokens for Section {
     fn to_tokens(&self, tokens: &mut proc_macro2::TokenStream) {
         let code = self.code.clone();
@@ -55,8 +51,8 @@ impl IndexSection {
         IndexSection { index, section }
     }
 
-    pub fn name(&self) -> Ident {
-        name_as_ident(&self.section.name)
+    pub fn name(&self) -> Result<Ident> {
+        name_as_ident2("section", &self.section.name)
     }
 
     pub fn index(&self) -> u32 {
