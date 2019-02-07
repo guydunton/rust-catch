@@ -1,7 +1,8 @@
+use crate::names::name_as_ident2;
 use crate::section::{kw::section, IndexSection, Section};
 use quote::{quote, ToTokens};
 use syn::parse::{Parse, ParseStream, Result};
-use syn::{braced, parenthesized, Ident, LitStr, Stmt};
+use syn::{braced, parenthesized, LitStr, Stmt};
 
 mod kw {
     custom_keyword!(test_case);
@@ -74,57 +75,66 @@ impl Parse for TestCase {
     }
 }
 
-fn name_as_ident(name: &LitStr) -> Ident {
-    let text = name.value().replace(' ', "_");
-    Ident::new(&text[..], name.span())
-}
-
 impl ToTokens for TestCase {
     fn to_tokens(&self, tokens: &mut proc_macro2::TokenStream) {
-        let final_name = name_as_ident(&self.name);
+        let final_name = name_as_ident2("test_case", &self.name);
         let code = self.code.clone();
 
-        if code.iter().any(|l| is_section(l)) {
-            // A stream to put the sections into
-            let mut section_stream = proc_macro2::TokenStream::new();
-
-            let sections = code
-                .iter()
-                .filter_map(|line| match line {
-                    Lines::Section(section) => Some(section),
-                    _ => None,
-                })
-                .collect::<Vec<&IndexSection>>();
-
-            for section in sections {
-                let name = section.name();
-                let index = section.index();
-                let trans = &code;
-
-                section_stream.extend(quote! {
-                    #[test]
-                    fn #name() {
-                        let __rust_catch_section = #index;
-
-                        #( #trans )*
-                    }
-                });
+        match final_name {
+            Err(error) => {
+                tokens.extend(error.to_compile_error());
             }
+            Ok(name) => {
+                if code.iter().any(|l| is_section(l)) {
+                    // A stream to put the sections into
+                    let mut section_stream = proc_macro2::TokenStream::new();
 
-            tokens.extend(quote! {
-                mod #final_name {
-                    use super::*;
-                    #section_stream
+                    let sections = code
+                        .iter()
+                        .filter_map(|line| match line {
+                            Lines::Section(section) => Some(section),
+                            _ => None,
+                        })
+                        .collect::<Vec<&IndexSection>>();
+
+                    for section in sections {
+                        let section_name = section.name();
+                        let index = section.index();
+                        let trans = &code;
+
+                        match section_name {
+                            Err(error) => {
+                                section_stream.extend(error.to_compile_error());
+                            }
+                            Ok(name) => {
+                                section_stream.extend(quote! {
+                                    #[test]
+                                    fn #name() {
+                                        let __rust_catch_section = #index;
+
+                                        #( #trans )*
+                                    }
+                                });
+                            }
+                        }
+                    }
+
+                    tokens.extend(quote! {
+                        mod #name {
+                            use super::*;
+                            #section_stream
+                        }
+                    });
+                } else {
+                    let result = quote! {
+                        #[test]
+                        fn #name() {
+                            #( #code )*;
+                        }
+                    };
+                    tokens.extend(result);
                 }
-            });
-        } else {
-            let result = quote! {
-                #[test]
-                fn #final_name() {
-                    #( #code )*;
-                }
-            };
-            tokens.extend(result);
+            }
         }
     }
 }
