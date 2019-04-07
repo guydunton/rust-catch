@@ -2,7 +2,6 @@ use crate::names::name_as_ident2;
 use crate::section::{kw::section, IndexSection, Section};
 use quote::{quote, ToTokens};
 use syn::parse::{Parse, ParseStream, Result};
-use syn::spanned::Spanned;
 use syn::{braced, parenthesized, LitStr, Stmt};
 
 #[allow(non_camel_case_types)]
