@@ -3,6 +3,7 @@ use quote::{quote, ToTokens};
 use syn::parse::{Parse, ParseStream, Result};
 use syn::{braced, parenthesized, Block, Ident, LitStr, Stmt};
 
+#[allow(non_camel_case_types)]
 pub mod kw {
     custom_keyword!(section);
 }
