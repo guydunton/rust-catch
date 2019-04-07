@@ -189,6 +189,12 @@ test "" {
 
 */
 
+test_suite! {
+    test("what is going on here") {
+
+    }
+}
+
 
 fn main() {
     println!("Adding numbers: {}", add(1, 2));
