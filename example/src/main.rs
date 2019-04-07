@@ -202,6 +202,28 @@ tests! {
     }
 }
 
+// test names can have non snake case words in them because a warning
+// suppression attribute is added to tests when they are converted into
+// functions
+// e.g.
+tests! {
+    test("This is upper_case") {
+
+    }
+}
+
+/*
+
+// Generates:
+
+#[test]
+#[allow(non_snake_case)]
+fn This_is_upper_case() {
+    
+}
+
+*/
+
 fn main() {
     println!("Adding numbers: {}", add(1, 2));
 }

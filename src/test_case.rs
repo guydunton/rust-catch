@@ -117,6 +117,7 @@ impl ToTokens for TestCase {
                             Ok(name) => {
                                 section_stream.extend(quote! {
                                     #[test]
+                                    #[allow(non_snake_case)]
                                     fn #name() {
                                         let __rust_catch_section = #index;
 
@@ -136,6 +137,7 @@ impl ToTokens for TestCase {
                 } else {
                     let result = quote! {
                         #[test]
+                        #[allow(non_snake_case)]
                         fn #name() {
                             #( #code )*;
                         }
