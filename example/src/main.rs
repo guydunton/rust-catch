@@ -1,6 +1,6 @@
 #![cfg_attr(test, deny(warnings))]
 
-use rust_catch::test_suite;
+use rust_catch::{test_suite, tests};
 
 
 
@@ -189,6 +189,12 @@ test "" {
 
 */
 
+
+tests! {
+    test_case("a simple test") {
+        assert_eq!(1, 1);
+    }
+}
 
 fn main() {
     println!("Adding numbers: {}", add(1, 2));

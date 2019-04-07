@@ -13,6 +13,11 @@ use crate::test_suite::TestSuite;
 
 #[proc_macro]
 pub fn test_suite(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
+    tests(input)
+}
+
+#[proc_macro]
+pub fn tests(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     let suite = parse_macro_input!(input as TestSuite);
 
     let expanded = quote! {
