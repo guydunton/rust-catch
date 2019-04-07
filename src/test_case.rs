@@ -4,6 +4,7 @@ use quote::{quote, ToTokens};
 use syn::parse::{Parse, ParseStream, Result};
 use syn::{braced, parenthesized, LitStr, Stmt};
 
+#[allow(non_camel_case_types)]
 mod kw {
     custom_keyword!(test_case);
 }

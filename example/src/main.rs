@@ -1,4 +1,4 @@
-#![cfg_attr(test, deny(warnings))]
+//#![cfg_attr(test, deny(warnings))]
 
 use rust_catch::{test_suite, tests};
 
