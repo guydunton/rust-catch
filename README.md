@@ -9,8 +9,8 @@ The goals of the Rust library are the same as the C++ one; write unit-test code 
 ## Example
 
 ```rust
-test_suite! {
-    test_case("descriptive test name") {
+tests! {
+    test("descriptive test name") {
         assert_eq!(function_under_test(), result); 
     }
 }
@@ -19,8 +19,8 @@ test_suite! {
 ## Example with Sections
 
 ```rust
-test_suite! {
-    test_case("vec capacity change appropriately") {
+tests! {
+    test("vec capacity change appropriately") {
 
         // Variable initialized for each section
         let mut vec = vec![1, 2, 3];
@@ -60,12 +60,12 @@ Rust-Catch aims to take the best things from default unit-testing in Rust and ad
 The above test could be written using Rust-Catch as follows:
 
 ```rust
-test_suite! {
-    test_case("add works with positive numbers") {
+tests! {
+    test("add works with positive numbers") {
         assert_eq!(add(1, 2), 3);
     }
 
-    test_case("add works with negative numbers") {
+    test("add works with negative numbers") {
         assert_eq!(add(5, -1), 4);
     }
 }
@@ -90,8 +90,8 @@ fn add_works_with_negative_numbers() {
 Sections are an answer to text fixtures from other testing frameworks. The setup code or teardown code in the test case becomes part of each section. This reducing the amount of repeated code in tests and reduces the amount of specialist code required for unit-tests.
 
 ```rust
-test_suite! {
-    test_case("Vec can be expanded and shrunk") {
+tests! {
+    test("Vec can be expanded and shrunk") {
         
         // Setup
         let mut vec = vec![1, 2, 3];
@@ -149,12 +149,12 @@ mod Vec_can_be_expanded_and_shrunk {
 
 Rust is implemented using procedural macros.
 
-Due to Rust parsing rules `test_case`'s have to be surrounded by a `test_suite`.
+Due to Rust parsing rules `test`'s have to be surrounded by a `tests`.
 
-`test_suite` is currently removed from the generated code but I'm not sure that's the best approach. An alternative is to wrap all `test_case`'s with a `mod` e.g.
+`tests` is currently removed from the generated code but I'm not sure that's the best approach. An alternative is to wrap all `test`'s with a `mod` e.g.
 
 ```rust
-test_suite! {
+tests! {
     ...
 }
 
