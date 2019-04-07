@@ -2,11 +2,13 @@ use crate::names::name_as_ident2;
 use crate::section::{kw::section, IndexSection, Section};
 use quote::{quote, ToTokens};
 use syn::parse::{Parse, ParseStream, Result};
+use syn::spanned::Spanned;
 use syn::{braced, parenthesized, LitStr, Stmt};
 
 #[allow(non_camel_case_types)]
 mod kw {
     custom_keyword!(test_case);
+    custom_keyword!(test);
 }
 
 #[derive(Clone)]
@@ -38,7 +40,13 @@ pub struct TestCase {
 
 impl Parse for TestCase {
     fn parse(input: ParseStream) -> Result<Self> {
-        input.parse::<kw::test_case>()?;
+        if input.peek(kw::test_case) {
+            // Would emit a warning here but that has to wait until
+            // Procedural Macro Diagnostics (RFC 1566) is in the language
+            input.parse::<kw::test_case>()?;
+        } else {
+            input.parse::<kw::test>()?;
+        }
 
         // Parse the brackets to get the name
         let paren_content;

@@ -1,6 +1,6 @@
 # Rust-Catch
 
-[![Build Status](https://travis-ci.org/gdunton/rust-catch.svg?branch=master)](https://travis-ci.org/gdunton/rust-catch)
+[![Build Status](https://travis-ci.org/guydunton/rust-catch.svg?branch=master)](https://travis-ci.org/guydunton/rust-catch)
 
 This is a Rust unit-testing framework based on the excellent C++ library [Catch/Catch2](https://github.com/catchorg/Catch2).
 

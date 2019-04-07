@@ -189,6 +189,12 @@ test "" {
 
 */
 
+test_suite! {
+    test("what is going on here") {
+
+    }
+}
+
 
 tests! {
     test_case("a simple test") {
