@@ -37,6 +37,14 @@ pub struct TestCase {
     code: Vec<Lines>,
 }
 
+pub fn test_names_duplicated(lhs: &TestCase, rhs: &TestCase) -> Result<()> {
+    if lhs.name.value() == rhs.name.value() {
+        let error_message = format!("name `{}` is a duplicate", lhs.name.value());
+        return Err(syn::Error::new(lhs.name.span(), error_message));
+    }
+    Ok(())
+}
+
 impl Parse for TestCase {
     fn parse(input: ParseStream) -> Result<Self> {
         if input.peek(kw::test_case) {
@@ -147,4 +155,36 @@ impl ToTokens for TestCase {
             }
         }
     }
+}
+
+#[test]
+fn get_error_with_duplicate_named_test_cases() {
+    let lit_str = LitStr::new("Duplicated", proc_macro2::Span::call_site());
+
+    let tc1 = TestCase {
+        name: lit_str.clone(),
+        code: vec![],
+    };
+
+    let tc2 = TestCase {
+        name: lit_str.clone(),
+        code: vec![],
+    };
+
+    assert!(test_names_duplicated(&tc1, &tc2).is_err());
+}
+
+#[test]
+fn get_no_error_with_distinctly_named_test_cases() {
+    let tc1 = TestCase {
+        name: LitStr::new("test1", proc_macro2::Span::call_site()),
+        code: vec![],
+    };
+
+    let tc2 = TestCase {
+        name: LitStr::new("test2", proc_macro2::Span::call_site()),
+        code: vec![],
+    };
+
+    assert!(test_names_duplicated(&tc1, &tc2).is_ok());
 }

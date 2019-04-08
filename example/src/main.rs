@@ -224,6 +224,21 @@ fn This_is_upper_case() {
 
 */
 
+// This must produce an error
+// tests! {
+//     test("duplicate title") {
+
+//     }
+
+//     test("duplicate title") {
+        
+//     }
+// }
+
+tests! {
+
+}
+
 fn main() {
     println!("Adding numbers: {}", add(1, 2));
 }
