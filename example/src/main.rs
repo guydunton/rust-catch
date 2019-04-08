@@ -224,14 +224,19 @@ fn This_is_upper_case() {
 
 */
 
-tests! {
-    test("duplicate title") {
+// This must produce an error
+// tests! {
+//     test("duplicate title") {
 
-    }
+//     }
 
-    test("duplicate title") {
+//     test("duplicate title") {
         
-    }
+//     }
+// }
+
+tests! {
+
 }
 
 fn main() {

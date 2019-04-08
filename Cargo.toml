@@ -1,6 +1,6 @@
 [package]
 name = "rust-catch"
-version = "0.2.3"
+version = "0.2.4"
 authors = ["Guy Dunton PC <guy.dunton@gmail.com>"]
 edition = "2018"
 

@@ -1,4 +1,4 @@
-use crate::test_case::TestCase;
+use crate::test_case::{test_names_duplicated, TestCase};
 use quote::{quote, ToTokens};
 use syn::parse::{Parse, ParseStream, Result};
 
@@ -24,11 +24,31 @@ impl Parse for TestSuite {
 
 impl ToTokens for TestSuite {
     fn to_tokens(&self, tokens: &mut proc_macro2::TokenStream) {
-        let test = &self.tests;
+        let tests_ref = &self.tests;
+
+        // Test each name in the test_suite against all the others to make
+        // sure they aren't the same.
+        let mut error_occur = false;
+        let count = tests_ref.len();
+        for index in 0..count {
+            for inner_index in 0..count {
+                if index != inner_index {
+                    let result = test_names_duplicated(&tests_ref[index], &tests_ref[inner_index]);
+                    if result.is_err() {
+                        tokens.extend(result.err().unwrap().to_compile_error());
+                        error_occur = true;
+                    }
+                }
+            }
+        }
+
+        if error_occur {
+            return;
+        }
 
         let expanded = quote! {
             #(
-                #test
+                #tests_ref
             )*
         };
 

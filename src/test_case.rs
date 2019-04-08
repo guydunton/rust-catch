@@ -38,6 +38,10 @@ pub struct TestCase {
 }
 
 pub fn test_names_duplicated(lhs: &TestCase, rhs: &TestCase) -> Result<()> {
+    if lhs.name.value() == rhs.name.value() {
+        let error_message = format!("name `{}` is a duplicate", lhs.name.value());
+        return Err(syn::Error::new(lhs.name.span(), error_message));
+    }
     Ok(())
 }
 
