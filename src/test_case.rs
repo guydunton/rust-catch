@@ -6,7 +6,6 @@ use syn::{braced, parenthesized, LitStr, Stmt};
 
 #[allow(non_camel_case_types)]
 mod kw {
-    custom_keyword!(test_case);
     custom_keyword!(test);
 }
 
@@ -47,13 +46,7 @@ pub fn test_names_duplicated(lhs: &TestCase, rhs: &TestCase) -> Result<()> {
 
 impl Parse for TestCase {
     fn parse(input: ParseStream) -> Result<Self> {
-        if input.peek(kw::test_case) {
-            // Would emit a warning here but that has to wait until
-            // Procedural Macro Diagnostics (RFC 1566) is in the language
-            input.parse::<kw::test_case>()?;
-        } else {
-            input.parse::<kw::test>()?;
-        }
+        input.parse::<kw::test>()?;
 
         // Parse the brackets to get the name
         let paren_content;
