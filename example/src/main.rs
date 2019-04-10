@@ -1,6 +1,6 @@
 #![cfg_attr(test, deny(warnings))]
 
-use rust_catch::{test_suite, tests};
+use rust_catch::tests;
 
 
 
@@ -9,13 +9,13 @@ fn add(a: i32, b: i32) -> i32 {
 }
 
 
-test_suite! {
+tests! {
 
-    test_case("add works with positive numbers") {
+    test("add works with positive numbers") {
         assert_eq!(add(1, 2), 3);
     }
 
-    test_case("add works with negative numbers") {
+    test("add works with negative numbers") {
         assert_eq!(add(5, -1), 4);
     }
 
@@ -38,8 +38,8 @@ fn add_works_with_negative_numbers() {
 */
 
 
-test_suite! {
-    test_case("sectioned test case") {
+tests! {
+    test("sectioned test case") {
         
         let mut a = 3;
 
@@ -56,8 +56,8 @@ test_suite! {
 }
 
 
-test_suite! {
-    test_case("another test case") {
+tests! {
+    test("another test case") {
 
         let mut a = 4; // This shouldn't warn on remove mut
 
@@ -139,8 +139,8 @@ mod another_test_case {
 }
 
 */
-test_suite! {
-    test_case("add tests") {
+tests! {
+    test("add tests") {
         section("Add works with regular numbers") {
             assert_eq!(add(1, 2), 3);
         }
@@ -152,8 +152,8 @@ test_suite! {
 }
 
 
-test_suite! {
-    test_case("test something") {
+tests! {
+    test("test something") {
         let mut vals = vec![1, 2, 3, 4];
 
         section("I can add things") {
@@ -189,7 +189,7 @@ test "" {
 
 */
 
-test_suite! {
+tests! {
     test("what is going on here") {
 
     }
@@ -197,7 +197,7 @@ test_suite! {
 
 
 tests! {
-    test_case("a simple test") {
+    test("a simple test") {
         assert_eq!(1, 1);
     }
 }
