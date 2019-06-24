@@ -130,6 +130,7 @@ impl ToTokens for TestCase {
                     }
 
                     tokens.extend(quote! {
+                        #[allow(non_snake_case)]
                         mod #name {
                             use super::*;
                             #section_stream
