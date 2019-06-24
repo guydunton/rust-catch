@@ -153,7 +153,7 @@ tests! {
 
 
 tests! {
-    test("test something") {
+    test("Test something") {
         let mut vals = vec![1, 2, 3, 4];
 
         section("I can add things") {
