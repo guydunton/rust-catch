@@ -3,9 +3,9 @@
 [![Build Status](https://travis-ci.org/guydunton/rust-catch.svg?branch=master)](https://travis-ci.org/guydunton/rust-catch)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## :hand: Disclaimer 
+## :hand: Disclaimer
 
-This library is a proof-of-concept. I do not recommend using it in production.
+This library is no longer being actively maintained. For reasons why read my [article on the subject](https://www.guydunton.com/articles/life-and-death-of-rust-catch/).
 
 ## What is this library
 
@@ -18,7 +18,7 @@ The goals of the Rust library are the same as the C++ one; write unit-test code 
 ```rust
 tests! {
     test("descriptive test name") {
-        assert_eq!(function_under_test(), result); 
+        assert_eq!(function_under_test(), result);
     }
 }
 ```
@@ -57,8 +57,9 @@ fn add_test() {
 ```
 
 There are some issues with this:
-* People write short names for functions, rather than good descriptions for the test.
-* Tests have to test multiple things at once or repeat setup code. There is no default support for text fixtures.
+
+- People write short names for functions, rather than good descriptions for the test.
+- Tests have to test multiple things at once or repeat setup code. There is no default support for text fixtures.
 
 ## Solution
 
@@ -99,7 +100,7 @@ Sections are an answer to text fixtures from other testing frameworks. The setup
 ```rust
 tests! {
     test("Vec can be expanded and shrunk") {
-        
+
         // Setup
         let mut vec = vec![1, 2, 3];
 
@@ -123,7 +124,7 @@ tests! {
 
 mod Vec_can_be_expanded_and_shrunk {
     use super::*;
-    
+
     #[test]
     fn Expanding_a_vec_increases_capacity_and_length() {
 
