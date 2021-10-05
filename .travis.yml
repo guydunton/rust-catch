@@ -1,6 +1,0 @@
-language: rust
-
-script:
-  - cd example
-  - cargo build --verbose
-  - cargo test --verbose
