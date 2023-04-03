@@ -1,11 +1,12 @@
 # Rust-Catch
 
-[![Build Status](https://travis-ci.org/guydunton/rust-catch.svg?branch=master)](https://travis-ci.org/guydunton/rust-catch)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## :hand: Disclaimer
 
 This library is no longer being actively maintained. For reasons why read my [article on the subject](https://www.guydunton.com/articles/life-and-death-of-rust-catch/).
+
+If the approach sounds interesting I recommend checking out [Subcase](https://github.com/mishmish-dev/subcase/) which is also a spiritual successor to Catch2 but follows a different approach.
 
 ## What is this library
 
